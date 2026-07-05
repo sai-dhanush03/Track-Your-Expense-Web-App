@@ -175,17 +175,25 @@ export function useExpenses() {
   }
 
   const addIncome = (source, amount) => {
+    const trimmedSource = source?.trim()
+    const numericAmount = Number(amount)
+
+    if (!trimmedSource || Number.isNaN(numericAmount) || numericAmount <= 0) {
+      return false
+    }
+
     const newIncomeEntry = {
       id:
         typeof crypto !== 'undefined' && crypto.randomUUID
           ? crypto.randomUUID()
           : `${Date.now()}-${Math.random()}`,
-      source,
-      amount,
+      source: trimmedSource,
+      amount: numericAmount,
       createdAt: new Date().toISOString(),
     }
 
     setIncomeEntries((currentEntries) => [newIncomeEntry, ...currentEntries])
+    return true
   }
 
   return {

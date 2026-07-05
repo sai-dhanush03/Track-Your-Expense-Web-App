@@ -258,6 +258,20 @@ h3 {
   transform: translateY(-1px);
 }
 
+.income-feedback {
+  margin: 10px 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.income-feedback.success {
+  color: #4ade80;
+}
+
+.income-feedback.error {
+  color: #f87171;
+}
+
 .primary-btn,
 .secondary-btn,
 .ghost-btn,

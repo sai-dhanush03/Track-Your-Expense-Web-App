@@ -4,6 +4,7 @@ import { formatCurrency } from '../utils/storage'
 function HeaderCard({ total, count, income, onAddIncome }) {
   const [source, setSource] = useState('')
   const [amount, setAmount] = useState('')
+  const [feedback, setFeedback] = useState('')
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -12,12 +13,19 @@ function HeaderCard({ total, count, income, onAddIncome }) {
     const numericAmount = Number(amount)
 
     if (!trimmedSource || !amount || Number.isNaN(numericAmount) || numericAmount <= 0) {
+      setFeedback('Please enter a valid source and amount.')
       return
     }
 
-    onAddIncome(trimmedSource, numericAmount)
-    setSource('')
-    setAmount('')
+    const added = onAddIncome(trimmedSource, numericAmount)
+
+    if (added) {
+      setFeedback(`${trimmedSource} added to this month’s income.`)
+      setSource('')
+      setAmount('')
+    } else {
+      setFeedback('Unable to add income right now.')
+    }
   }
 
   return (
@@ -72,6 +80,11 @@ function HeaderCard({ total, count, income, onAddIncome }) {
           Add income
         </button>
       </form>
+      {feedback ? (
+        <p className={`income-feedback ${feedback.includes('added') ? 'success' : 'error'}`}>
+          {feedback}
+        </p>
+      ) : null}
     </header>
   )
 }
